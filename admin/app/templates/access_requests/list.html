@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Access Requests - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Access Requests</h3>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>Full Name</th><th>Email</th><th>Reason</th><th>Requested</th><th style="width: 260px;"></th><th style="width: 100px;"></th></tr></thead>
+    <tbody>
+      {% for req in result.items %}
+      <tr>
+        <td>{{ req.full_name }}</td>
+        <td>{{ req.email }}</td>
+        <td class="text-muted small">{{ req.reason or "—" }}</td>
+        <td>{{ req.requested_at }}</td>
+        <td>
+          <form method="post" action="{{ url_for('access_requests.approve', request_id=req.id) }}" class="d-flex gap-2" data-confirm="Approve access for {{ req.email }}? This sends them an invite email.">
+            {{ csrf_field() }}
+            <select class="form-select form-select-sm" name="role" style="width: 160px;">
+              <option value="administrator">Administrator</option>
+              <option value="super_administrator">Super Administrator</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('access_requests.reject', request_id=req.id) }}" data-confirm="Reject this request?">
+            {{ csrf_field() }}
+            <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'access_requests.list_requests') }}
+  {% else %}
+    {{ empty_state.render("No pending access requests.") }}
+  {% endif %}
+</div>
+{% endblock %}

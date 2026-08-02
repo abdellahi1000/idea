@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Balance Management - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Balance Management</h3>
+
+<div class="table-card" style="max-width: 480px;">
+  <dl class="row">
+    <dt class="col-sm-5">Current Balance</dt>
+    <dd class="col-sm-7">{{ "%.2f"|format(wallet.balance) }} {{ wallet.currency_code }}</dd>
+  </dl>
+
+  <form method="post" action="{{ url_for('balance.adjust', wallet_id=wallet.id) }}" data-confirm="Apply this balance adjustment? This action is permanently logged.">
+    {{ csrf_field() }}
+    <div class="mb-3">
+      <label class="form-label">Action</label>
+      <select class="form-select" name="action" required>
+        <option value="add">Add Balance</option>
+        <option value="deduct">Deduct Balance</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Amount</label>
+      <input type="number" step="0.01" min="0.01" class="form-control" name="amount" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Reason (required)</label>
+      <textarea class="form-control" name="reason" rows="2" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Adjustment</button>
+  </form>
+</div>
+{% endblock %}

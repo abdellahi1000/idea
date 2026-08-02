@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Transactions - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Transactions</h3>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-auto">
+    <input type="text" class="form-control" name="q" value="{{ filters.q }}" placeholder="Phone, name, or transaction number">
+  </div>
+  <div class="col-auto">
+    <select class="form-select" name="status">
+      <option value="">Any status</option>
+      {% for value in ["pending", "completed", "failed", "reversed"] %}
+      <option value="{{ value }}" {{ "selected" if filters.status == value }}>{{ value|title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto"><input type="date" class="form-control" name="from" value="{{ filters.from }}"></div>
+  <div class="col-auto"><input type="date" class="form-control" name="to" value="{{ filters.to }}"></div>
+  <div class="col-auto"><button type="submit" class="btn btn-primary">Filter</button></div>
+  <div class="col-auto">
+    <a class="btn btn-outline-secondary" href="{{ url_for('transactions.export_csv', **filters) }}">Export CSV</a>
+  </div>
+</form>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th><a href="{{ url_for('transactions.list_transactions', sort='created_at', order='asc' if sort=='created_at' and order=='desc' else 'desc', **filters) }}">Date/Time</a></th>
+        <th>Transaction Number</th><th>Sender</th><th>Receiver</th>
+        <th><a href="{{ url_for('transactions.list_transactions', sort='amount', order='asc' if sort=='amount' and order=='desc' else 'desc', **filters) }}">Amount</a></th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in result.items %}
+      <tr>
+        <td>{{ tx.created_at }}</td>
+        <td class="font-monospace small">{{ tx.id }}</td>
+        <td>{{ tx.sender_name or "—" }}</td>
+        <td>{{ tx.receiver_name or "—" }}</td>
+        <td>{{ "%.2f"|format(tx.amount) }} {{ tx.currency_code }}</td>
+        <td>{{ status_badge.render(tx.status) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'transactions.list_transactions', dict(filters, sort=sort, order=order)) }}
+  {% else %}
+    {{ empty_state.render("No transactions match these filters.") }}
+  {% endif %}
+</div>
+{% endblock %}

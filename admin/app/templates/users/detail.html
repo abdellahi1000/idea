@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% import "partials/pagination.html" as pagination %}
+{% set profile = detail.profile %}
+{% block title %}{{ profile.full_name }} - JOJO Admin{% endblock %}
+{% block content %}
+<a href="{{ url_for('users.list_users') }}" class="text-decoration-none">&larr; Back to Users</a>
+<h3 class="mb-4 mt-2">{{ profile.full_name }} {{ status_badge.render(profile.status) }}</h3>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="table-card mb-3">
+      <h5>Personal Information</h5>
+      <dl class="row mb-0">
+        <dt class="col-sm-4">User ID</dt><dd class="col-sm-8">{{ profile.id }}</dd>
+        <dt class="col-sm-4">Phone</dt><dd class="col-sm-8">{{ profile.phone or "—" }}</dd>
+        <dt class="col-sm-4">Email</dt><dd class="col-sm-8">{{ profile.email or "—" }}</dd>
+        <dt class="col-sm-4">Created</dt><dd class="col-sm-8">{{ profile.created_at }}</dd>
+      </dl>
+    </div>
+
+    <div class="table-card mb-3">
+      <h5>Security Status</h5>
+      <dl class="row mb-0">
+        <dt class="col-sm-6">Security Recovery Code</dt>
+        <dd class="col-sm-6">{{ "Created" if detail.has_recovery_code else "Not Created" }}</dd>
+        <dt class="col-sm-6">Biometric Authentication</dt>
+        <dd class="col-sm-6">{{ "Enabled" if profile.biometric_enabled else "Disabled" }}</dd>
+      </dl>
+    </div>
+
+    <div class="table-card mb-3">
+      <h5>Registered Devices</h5>
+      {% if profile.devices %}
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Device</th><th>Platform</th><th>Status</th><th>Last Login</th></tr></thead>
+        <tbody>
+          {% for device in profile.devices %}
+          <tr>
+            <td>{{ device.device_name }}</td>
+            <td>{{ device.platform }}</td>
+            <td>{{ status_badge.render(device.status) }}</td>
+            <td>{{ device.last_login_at or "—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        {{ empty_state.render("No registered devices.") }}
+      {% endif %}
+    </div>
+
+    <div class="table-card">
+      <h5>Administrative Notes</h5>
+      <form method="post" action="{{ url_for('users.save_notes', user_id=profile.id) }}">
+        {{ csrf_field() }}
+        <textarea class="form-control mb-2" name="notes" rows="3">{{ profile.admin_notes or "" }}</textarea>
+        <button type="submit" class="btn btn-sm btn-outline-primary">Save Notes</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="table-card mb-3">
+      <h5>Identity Verification</h5>
+      {% if detail.identity_verifications %}
+        {% set latest = detail.identity_verifications[0] %}
+        <p>Status: {{ status_badge.render(latest.status) }}</p>
+        {% if latest.rejection_reason %}<p class="text-muted small">Reason: {{ latest.rejection_reason }}</p>{% endif %}
+      {% else %}
+        {{ empty_state.render("No identity verification submitted.") }}
+      {% endif %}
+    </div>
+
+    <div class="table-card mb-3">
+      <h5>Actions</h5>
+      <div class="d-flex flex-wrap gap-2">
+        {% if profile.status != 'suspended' %}
+        <form method="post" action="{{ url_for('users.suspend', user_id=profile.id) }}" data-confirm="Suspend this account?">
+          {{ csrf_field() }}
+          <button type="submit" class="btn btn-outline-warning btn-sm">Suspend Account</button>
+        </form>
+        {% endif %}
+        {% if profile.status != 'active' %}
+        <form method="post" action="{{ url_for('users.activate', user_id=profile.id) }}" data-confirm="Activate this account?">
+          {{ csrf_field() }}
+          <button type="submit" class="btn btn-outline-success btn-sm">Activate Account</button>
+        </form>
+        {% endif %}
+        {% if profile.status != 'locked' %}
+        <form method="post" action="{{ url_for('users.lock', user_id=profile.id) }}" data-confirm="Lock this account?">
+          {{ csrf_field() }}
+          <input type="hidden" name="reason" value="manual">
+          <button type="submit" class="btn btn-outline-dark btn-sm">Lock Account</button>
+        </form>
+        {% endif %}
+        {% if wallet %}
+        <a href="{{ url_for('balance.adjust_form', wallet_id=wallet.id) }}" class="btn btn-outline-secondary btn-sm">Adjust Balance</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="table-card">
+      <h5>Transaction History</h5>
+      {% if transactions.items %}
+      <table class="table table-sm">
+        <thead><tr><th>Amount</th><th>Type</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>
+          {% for tx in transactions.items %}
+          <tr>
+            <td>{{ "%.2f"|format(tx.amount) }} {{ tx.currency_code }}</td>
+            <td>{{ tx.type }}</td>
+            <td>{{ status_badge.render(tx.status) }}</td>
+            <td>{{ tx.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {{ pagination.render(transactions, 'users.detail', {'user_id': profile.id}) }}
+      {% else %}
+        {{ empty_state.render("No transactions yet.") }}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

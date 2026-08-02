@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Device Transfer Requests - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Device Transfer Requests</h3>
+
+<div class="btn-group mb-3">
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'pending' }}" href="{{ url_for('device_transfers.list_requests', status='pending') }}">Pending</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'approved' }}" href="{{ url_for('device_transfers.list_requests', status='approved') }}">Approved</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'denied' }}" href="{{ url_for('device_transfers.list_requests', status='denied') }}">Denied</a>
+</div>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>User</th><th>Old Device</th><th>New Device</th><th>Verification Method</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for request in result.items %}
+      <tr>
+        <td>{{ (request.profiles or {}).get('full_name', '—') }}</td>
+        <td>{{ (request.from_device or {}).get('device_name', '—') }}</td>
+        <td>{{ (request.to_device or {}).get('device_name', '—') }}</td>
+        <td>{{ (request.verification_method or "—").replace('_', ' ')|title }}</td>
+        <td>{{ request.requested_at }}</td>
+        <td>{{ status_badge.render(request.status) }}</td>
+        <td>
+          {% if request.status == 'pending' %}
+          <div class="d-flex gap-2">
+            <form method="post" action="{{ url_for('device_transfers.approve', request_id=request.id) }}" data-confirm="Approve this device transfer?">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+            </form>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#reject-{{ request.id }}">Reject</button>
+          </div>
+          <div class="collapse mt-2" id="reject-{{ request.id }}">
+            <form method="post" action="{{ url_for('device_transfers.reject', request_id=request.id) }}" data-confirm="Reject this device transfer?">
+              {{ csrf_field() }}
+              <textarea class="form-control form-control-sm mb-2" name="reason" placeholder="Reason" required></textarea>
+              <button type="submit" class="btn btn-sm btn-danger">Confirm Reject</button>
+            </form>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'device_transfers.list_requests', {'status': status}) }}
+  {% else %}
+    {{ empty_state.render("No requests in this status.") }}
+  {% endif %}
+</div>
+{% endblock %}

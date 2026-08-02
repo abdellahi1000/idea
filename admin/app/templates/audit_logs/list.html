@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Audit Logs - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Audit Logs</h3>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-auto">
+    <select class="form-select" name="admin_id">
+      <option value="">All administrators</option>
+      {% for admin in administrators %}
+      <option value="{{ admin.id }}" {{ "selected" if filters.admin_id == admin.id }}>{{ admin.full_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <input type="text" class="form-control" name="action" value="{{ filters.action or '' }}" placeholder="Action contains...">
+  </div>
+  <div class="col-auto"><input type="date" class="form-control" name="from" value="{{ filters.from or '' }}"></div>
+  <div class="col-auto"><input type="date" class="form-control" name="to" value="{{ filters.to or '' }}"></div>
+  <div class="col-auto"><button type="submit" class="btn btn-primary">Filter</button></div>
+</form>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table table-sm align-middle">
+    <thead><tr><th>Administrator</th><th>Action</th><th>Entity</th><th>Affected</th><th>IP Address</th><th>Result</th><th>When</th></tr></thead>
+    <tbody>
+      {% for log in result.items %}
+      <tr>
+        <td>{{ (log.administrator_accounts or {}).get('full_name', '—') }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.entity_table }}</td>
+        <td class="font-monospace small">{{ log.entity_id or "—" }}</td>
+        <td>{{ log.ip_address or "—" }}</td>
+        <td>{{ log.result }}</td>
+        <td>{{ log.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'audit_logs.list_logs', filters) }}
+  {% else %}
+    {{ empty_state.render("No audit log entries match these filters.") }}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% macro render(status) %}
+{% set colors = {
+  'active': 'success', 'approved': 'success', 'completed': 'success', 'claimed': 'success',
+  'pending': 'warning', 'suspended': 'secondary', 'locked': 'dark', 'disabled': 'secondary',
+  'rejected': 'danger', 'denied': 'danger', 'failed': 'danger', 'reversed': 'danger', 'cancelled': 'secondary',
+  'not_submitted': 'secondary', 'expired': 'secondary', 'transferred': 'secondary',
+} %}
+<span class="badge text-bg-{{ colors.get(status, 'secondary') }}">{{ status.replace('_', ' ')|title }}</span>
+{% endmacro %}

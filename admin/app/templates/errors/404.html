@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Not found{% endblock %}
+{% block content %}
+<div class="table-card text-center py-5">
+  <h4>Page not found</h4>
+  <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Back to dashboard</a>
+</div>
+{% endblock %}
+{% block guest_content %}
+<div class="guest-wrapper">
+  <div class="card login-card p-4 text-center">
+    <h4>Page not found</h4>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Go to sign in</a>
+  </div>
+</div>
+{% endblock %}

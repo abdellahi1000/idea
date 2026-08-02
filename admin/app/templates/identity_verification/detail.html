@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "partials/status_badge.html" as status_badge %}
+{% block title %}Verification Review - JOJO Admin{% endblock %}
+{% block content %}
+<a href="{{ url_for('identity_verification.list_requests') }}" class="text-decoration-none">&larr; Back</a>
+<h3 class="mb-4 mt-2">Verification Review {{ status_badge.render(record.status) }}</h3>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="table-card text-center">
+      <h6>Identity Card (Front)</h6>
+      {% if record.document_front_url %}<img src="{{ record.document_front_url }}" class="img-fluid rounded">{% else %}<p class="text-muted">Not provided</p>{% endif %}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="table-card text-center">
+      <h6>Identity Card (Back)</h6>
+      {% if record.document_back_url %}<img src="{{ record.document_back_url }}" class="img-fluid rounded">{% else %}<p class="text-muted">Not provided</p>{% endif %}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="table-card text-center">
+      <h6>Selfie</h6>
+      {% if record.selfie_url %}<img src="{{ record.selfie_url }}" class="img-fluid rounded">{% else %}<p class="text-muted">Not provided</p>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="table-card mb-3">
+  <dl class="row mb-0">
+    <dt class="col-sm-3">User</dt><dd class="col-sm-9">{{ (record.profiles or {}).get('full_name', '—') }} ({{ (record.profiles or {}).get('phone', '—') }})</dd>
+    <dt class="col-sm-3">Face Matching Result</dt><dd class="col-sm-9">{{ record.match_similarity if record.match_similarity is not none else "Not yet evaluated" }}</dd>
+    <dt class="col-sm-3">Submission Date</dt><dd class="col-sm-9">{{ record.created_at }}</dd>
+    {% if record.rejection_reason %}<dt class="col-sm-3">Rejection Reason</dt><dd class="col-sm-9">{{ record.rejection_reason }}</dd>{% endif %}
+  </dl>
+</div>
+
+{% if record.status == 'pending' %}
+<div class="table-card">
+  <div class="d-flex gap-2 mb-3">
+    <form method="post" action="{{ url_for('identity_verification.approve', request_id=record.id) }}" data-confirm="Approve this identity verification?">
+      {{ csrf_field() }}
+      <button type="submit" class="btn btn-success">Approve</button>
+    </form>
+  </div>
+  <form method="post" action="{{ url_for('identity_verification.reject', request_id=record.id) }}" data-confirm="Reject this identity verification?">
+    {{ csrf_field() }}
+    <div class="mb-2">
+      <label class="form-label">Rejection reason (required)</label>
+      <textarea class="form-control" name="reason" rows="2" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-outline-danger">Reject</button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

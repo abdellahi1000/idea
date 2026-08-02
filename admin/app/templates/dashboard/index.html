@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  {% set cards = [
+    ("Total Users", stats.total_users),
+    ("Active Accounts", stats.active_accounts),
+    ("Suspended Accounts", stats.suspended_accounts),
+    ("Locked Accounts", stats.locked_accounts),
+    ("Transfers Today", stats.transfers_today),
+    ("Total Transferred Today", "%.2f"|format(stats.total_transferred_today)),
+    ("Pending Identity Verifications", stats.pending_identity_verifications),
+    ("Pending Device Transfers", stats.pending_device_transfers),
+  ] %}
+  {% for label, value in cards %}
+  <div class="col-md-3">
+    <div class="card stat-card p-3">
+      <div class="text-muted small">{{ label }}</div>
+      <div class="fs-3 fw-bold">{{ value }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="table-card">
+  <h5 class="mb-3">Recent Administrative Activity</h5>
+  {% if recent_activity %}
+  <table class="table table-sm">
+    <thead><tr><th>Administrator</th><th>Action</th><th>Entity</th><th>Result</th><th>When</th></tr></thead>
+    <tbody>
+      {% for log in recent_activity %}
+      <tr>
+        <td>{{ (log.administrator_accounts or {}).get('full_name', '—') }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.entity_table }}</td>
+        <td>{{ log.result }}</td>
+        <td>{{ log.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    {% import "partials/empty_state.html" as empty_state %}
+    {{ empty_state.render("No recent administrative activity.") }}
+  {% endif %}
+</div>
+{% endblock %}

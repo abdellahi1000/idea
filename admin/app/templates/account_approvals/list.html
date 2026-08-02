@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Account Approvals - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Account Approvals</h3>
+
+<div class="btn-group mb-3">
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'pending' }}" href="{{ url_for('account_approvals.list_accounts', status='pending') }}">Pending</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'approved' }}" href="{{ url_for('account_approvals.list_accounts', status='approved') }}">Approved</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'rejected' }}" href="{{ url_for('account_approvals.list_accounts', status='rejected') }}">Rejected</a>
+</div>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>Full Name</th><th>Phone</th><th>Email</th><th>Registered</th><th>Status</th>{% if status == 'pending' %}<th style="width: 340px;"></th>{% endif %}</tr></thead>
+    <tbody>
+      {% for account in result.items %}
+      <tr>
+        <td>{{ account.full_name }}</td>
+        <td>{{ account.phone or "—" }}</td>
+        <td>{{ account.email or "—" }}</td>
+        <td>{{ account.created_at }}</td>
+        <td>
+          {{ status_badge.render(account.approval_status) }}
+          {% if account.approval_status == 'rejected' and account.approval_rejection_reason %}
+            <div class="text-muted small mt-1">{{ account.approval_rejection_reason }}</div>
+          {% endif %}
+        </td>
+        {% if status == 'pending' %}
+        <td>
+          <div class="d-flex gap-2 align-items-start">
+            <form method="post" action="{{ url_for('account_approvals.approve', user_id=account.id) }}" data-confirm="Approve {{ account.full_name }}'s account?">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-success">Approve</button>
+            </form>
+            <form method="post" action="{{ url_for('account_approvals.reject', user_id=account.id) }}" data-confirm="Reject {{ account.full_name }}'s account?" class="d-flex gap-2">
+              {{ csrf_field() }}
+              <input type="text" name="reason" class="form-control form-control-sm" placeholder="Rejection reason" required style="width: 180px;">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+            </form>
+          </div>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'account_approvals.list_accounts', {'status': status}) }}
+  {% else %}
+    {{ empty_state.render("No accounts in this status.") }}
+  {% endif %}
+</div>
+{% endblock %}

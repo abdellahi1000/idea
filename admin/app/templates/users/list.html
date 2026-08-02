@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Users - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Users</h3>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-auto">
+    <input type="text" class="form-control" name="q" value="{{ search }}" placeholder="Search name or phone">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Full Name</th><th>Phone</th><th>Balance</th><th>Status</th>
+        <th>Verification</th><th>Created</th><th>Last Login</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in result.items %}
+      <tr>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ "%.2f"|format(user.balance) if user.balance is not none else "—" }} {{ user.currency_code or "" }}</td>
+        <td>{{ status_badge.render(user.status) }}</td>
+        <td>{{ status_badge.render(user.verification_status) }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>{{ user.last_login_at or "—" }}</td>
+        <td><a href="{{ url_for('users.detail', user_id=user.id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'users.list_users', {'q': search}) }}
+  {% else %}
+    {{ empty_state.render("No users found.") }}
+  {% endif %}
+</div>
+{% endblock %}

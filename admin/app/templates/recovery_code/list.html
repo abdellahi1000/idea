@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Security Recovery Code - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Security Recovery Code Management</h3>
+<p class="text-muted">
+  The actual code is never displayed, enterable, copyable, or exportable here - administrators only manage
+  permissions. <strong>Reset</strong> permanently deletes the user's current code without ever revealing it;
+  they then create a brand-new one from their own app. <strong>Allow One-Time View</strong> lets the user see
+  their own existing code exactly once on their own device - the permission is consumed automatically the
+  moment they view it. Only use either action after verifying the user's identity in person.
+</p>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>User</th><th>Phone</th><th>Code Status</th><th style="width: 420px;"></th></tr></thead>
+    <tbody>
+      {% for user in result.items %}
+      <tr>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.phone }}</td>
+        <td>
+          {{ "Created" if user.has_code else "Not Created" }}
+          {% if user.view_pending %}
+            <span class="text-muted small">(one-time view pending)</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if user.has_code and current_user.is_super_administrator %}
+          <div class="d-flex gap-2">
+            <form method="post" action="{{ url_for('recovery_code.grant_view', user_id=user.id) }}" data-confirm="Allow {{ user.full_name }} to view their Recovery Code one time? Only do this after verifying their identity in person.">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-outline-primary" {{ "disabled" if user.view_pending }}>Allow One-Time View</button>
+            </form>
+            <form method="post" action="{{ url_for('recovery_code.reset', user_id=user.id) }}" data-confirm="Reset {{ user.full_name }}'s Recovery Code? This permanently deletes it - only do this after verifying their identity in person.">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-outline-danger">Reset Security Recovery Code</button>
+            </form>
+          </div>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'recovery_code.list_users') }}
+  {% else %}
+    {{ empty_state.render("No users found.") }}
+  {% endif %}
+</div>
+{% endblock %}

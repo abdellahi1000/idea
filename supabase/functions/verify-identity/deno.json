@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "supabase": "npm:@supabase/supabase-js@2",
+    "rekognition": "npm:@aws-sdk/client-rekognition@3"
+  }
+}

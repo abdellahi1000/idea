@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Identity Verification - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Identity Verification</h3>
+
+<div class="btn-group mb-3">
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'pending' }}" href="{{ url_for('identity_verification.list_requests', status='pending') }}">Pending</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'approved' }}" href="{{ url_for('identity_verification.list_requests', status='approved') }}">Approved</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'rejected' }}" href="{{ url_for('identity_verification.list_requests', status='rejected') }}">Rejected</a>
+</div>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>User</th><th>Phone</th><th>Similarity</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for request in result.items %}
+      <tr>
+        <td>{{ (request.profiles or {}).get('full_name', '—') }}</td>
+        <td>{{ (request.profiles or {}).get('phone', '—') }}</td>
+        <td>{{ request.match_similarity if request.match_similarity is not none else "—" }}</td>
+        <td>{{ request.created_at }}</td>
+        <td>{{ status_badge.render(request.status) }}</td>
+        <td><a href="{{ url_for('identity_verification.detail', request_id=request.id) }}" class="btn btn-sm btn-outline-primary">Review</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'identity_verification.list_requests', {'status': status}) }}
+  {% else %}
+    {{ empty_state.render("No requests in this status.") }}
+  {% endif %}
+</div>
+{% endblock %}

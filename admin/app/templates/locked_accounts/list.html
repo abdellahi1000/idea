@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Locked Accounts - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Locked Accounts</h3>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>User</th><th>Lock Reason</th><th>Lock Date</th><th></th></tr></thead>
+    <tbody>
+      {% for user in result.items %}
+      <tr>
+        <td>{{ user.full_name }} ({{ user.phone }})</td>
+        <td>{{ (user.lock.reason if user.lock else "—").replace('_', ' ')|title }}</td>
+        <td>{{ user.lock.locked_at if user.lock else "—" }}</td>
+        <td class="d-flex gap-2">
+          <form method="post" action="{{ url_for('locked_accounts.unlock', user_id=user.id) }}" data-confirm="Unlock this account?">
+            {{ csrf_field() }}
+            <button type="submit" class="btn btn-sm btn-outline-success">Unlock Account</button>
+          </form>
+          <form method="post" action="{{ url_for('locked_accounts.suspend', user_id=user.id) }}" data-confirm="Suspend this account instead?">
+            {{ csrf_field() }}
+            <button type="submit" class="btn btn-sm btn-outline-warning">Suspend Account</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'locked_accounts.list_locked') }}
+  {% else %}
+    {{ empty_state.render("No locked accounts.") }}
+  {% endif %}
+</div>
+{% endblock %}
