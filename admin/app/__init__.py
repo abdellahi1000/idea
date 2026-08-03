@@ -40,7 +40,7 @@ def _register_template_globals(app: Flask) -> None:
         def csrf_field() -> Markup:
             return Markup(f'<input type="hidden" name="csrf_token" value="{generate_csrf()}">')
 
-        return {"csrf_field": csrf_field}
+        return {"csrf_field": csrf_field, "csrf_token": generate_csrf}
 
 
 def _register_blueprints(app: Flask) -> None:
@@ -51,10 +51,12 @@ def _register_blueprints(app: Flask) -> None:
     from app.controllers.balance_controller import balance_bp
     from app.controllers.dashboard_controller import dashboard_bp
     from app.controllers.device_transfers_controller import device_transfers_bp
+    from app.controllers.face_verification_controller import face_verification_bp
     from app.controllers.identity_verification_controller import identity_verification_bp
     from app.controllers.locked_accounts_controller import locked_accounts_bp
     from app.controllers.recovery_code_controller import recovery_code_bp
     from app.controllers.settings_controller import settings_bp
+    from app.controllers.team_controller import team_bp
     from app.controllers.transactions_controller import transactions_bp
     from app.controllers.users_controller import users_bp
 
@@ -66,6 +68,8 @@ def _register_blueprints(app: Flask) -> None:
     app.register_blueprint(identity_verification_bp)
     app.register_blueprint(recovery_code_bp)
     app.register_blueprint(device_transfers_bp)
+    app.register_blueprint(face_verification_bp)
+    app.register_blueprint(team_bp)
     app.register_blueprint(locked_accounts_bp)
     app.register_blueprint(transactions_bp)
     app.register_blueprint(balance_bp)

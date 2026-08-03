@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Team - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-1">Team</h3>
+<p class="text-muted">AI Face Verification management. Select a customer below to open their verification workspace.</p>
+
+<div class="table-card mb-3">
+  <input
+    type="text"
+    id="team-search"
+    class="form-control mb-3"
+    placeholder="Search by name, phone, or account number..."
+    value="{{ search }}"
+    autocomplete="off">
+  <div id="team-customer-list">
+    {% include "team/_customer_list.html" %}
+  </div>
+</div>
+
+<div id="team-workspace">
+  <div class="table-card text-center text-muted py-5">Select a customer above to open their verification workspace.</div>
+</div>
+{% endblock %}

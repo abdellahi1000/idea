@@ -1,0 +1,19 @@
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/empty_state.html" as empty_state %}
+{% if result.items %}
+<table class="table align-middle mb-0" id="team-customer-table">
+  <tbody>
+    {% for item in result.items %}
+    <tr class="team-customer-row" data-user-id="{{ item.id }}" role="button">
+      <td class="text-muted" style="width: 180px;">{{ item.phone or "—" }}</td>
+      <td class="text-muted" style="width: 140px;">{{ item.account_number }}</td>
+      <td>{{ item.full_name }}</td>
+      <td class="text-end text-muted" style="width: 32px;">&rarr;</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{{ pagination.render(result, 'team.list_partial', {'q': search}) }}
+{% else %}
+  {{ empty_state.render("No customers match your search." if search else "No team members yet.") }}
+{% endif %}

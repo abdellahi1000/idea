@@ -1,8 +1,11 @@
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
 
+import { deviceRepository } from '@/repositories/device.repository';
 import { profileRepository } from '@/repositories/profile.repository';
 import { authService } from '@/services/auth.service';
+import { deviceService } from '@/services/device.service';
+import { deviceTransferService } from '@/services/device-transfer.service';
 
 /**
  * The single place that decides where a signed-in user is allowed to go:
@@ -42,5 +45,22 @@ export async function runAccessGate(userId: string): Promise<void> {
     return;
   }
 
-  router.replace('/home');
+  const installationId = await deviceTransferService.getCurrentInstallationId();
+  const currentDevice = await deviceRepository.findByInstallationId(userId, installationId);
+
+  if (currentDevice?.status === 'active') {
+    router.replace('/home');
+    return;
+  }
+
+  const hasOtherActiveDevice = await deviceRepository.hasActiveDevice(userId);
+  if (!hasOtherActiveDevice) {
+    // First device ever registered for this account - no transfer needed.
+    const device = currentDevice ?? (await deviceService.registerCurrentDevice(userId));
+    await deviceService.activateDevice(device.id);
+    router.replace('/home');
+    return;
+  }
+
+  router.replace('/new-device-detected');
 }

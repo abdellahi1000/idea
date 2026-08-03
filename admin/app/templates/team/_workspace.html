@@ -1,0 +1,112 @@
+{% if not detail %}
+<div class="table-card text-center text-muted py-5">This user has no First Face Identity on file.</div>
+{% else %}
+{% set profile = detail.profile %}
+{% set shown_pipeline = pipeline_result.pipeline if pipeline_result else (detail.latest_attempt.ai_result.pipeline if detail.latest_attempt and detail.latest_attempt.ai_result else none) %}
+{% set shown_failed_step = pipeline_result.failed_step if pipeline_result else (detail.latest_attempt.ai_result.failed_step if detail.latest_attempt and detail.latest_attempt.ai_result else none) %}
+
+<div class="table-card mb-3">
+  <h5 class="mb-1">{{ profile.full_name }}</h5>
+  <p class="text-muted small mb-0">{{ profile.phone or "—" }} &middot; {{ profile.account_number }}</p>
+</div>
+
+{% if generate_error %}
+<div class="alert alert-danger">AI verification could not be completed: {{ generate_error }}</div>
+{% endif %}
+
+<div class="row g-3 mb-3">
+  <div class="col-md-6 col-lg-3">
+    <div class="table-card text-center h-100">
+      <h6>First Face ID</h6>
+      {% if detail.first_face_url %}
+        <video src="{{ detail.first_face_url }}" class="img-fluid rounded" controls></video>
+      {% else %}
+        <p class="text-muted mb-0">Not available</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="table-card text-center h-100">
+      <h6>Last Face ID</h6>
+      {% if detail.last_face_url %}
+        <video src="{{ detail.last_face_url }}" class="img-fluid rounded" controls></video>
+      {% else %}
+        <p class="text-muted mb-0">No verification attempt on file</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="table-card text-center h-100">
+      <h6>Profile Selfie</h6>
+      {% if detail.selfie_url %}
+        <img src="{{ detail.selfie_url }}" class="img-fluid rounded">
+      {% else %}
+        <p class="text-muted mb-0">Not available</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="table-card text-center h-100">
+      <h6>Identity Card (Front)</h6>
+      {% if detail.id_card_url %}
+        <img src="{{ detail.id_card_url }}" class="img-fluid rounded">
+      {% else %}
+        <p class="text-muted mb-0">Not available</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="table-card mb-3">
+  {% if profile.face_verification_disabled %}
+    <p class="text-danger mb-0">
+      Face Verification has been locked for this account after repeated failures. Only an administrator may
+      unlock it after manually verifying the customer's identity - visit Face Verification &rarr; Disabled Accounts.
+    </p>
+  {% else %}
+    <form id="team-generate-form" data-user-id="{{ user_id }}">
+      <button type="submit" class="btn btn-primary" {{ "disabled" if not detail.latest_attempt }}>
+        Generate AI Verification
+      </button>
+    </form>
+    {% if not detail.latest_attempt %}
+      <p class="text-muted small mt-2 mb-0">This customer has no submitted Last Face ID attempt to verify yet.</p>
+    {% endif %}
+  {% endif %}
+</div>
+
+{% if shown_pipeline %}
+<div class="table-card">
+  <h6 class="mb-3">
+    {% if shown_failed_step %}
+      <span class="badge text-bg-danger">Verification Failed</span>
+    {% else %}
+      <span class="badge text-bg-success">Identity Verified</span>
+    {% endif %}
+  </h6>
+  <ul class="list-unstyled mb-0">
+    {% for key, step in shown_pipeline.items() %}
+    <li>
+      {{ "✓" if step.matched else "✗" }} {{ key.replace('_', ' ')|title }}
+      {%- if step.confidence is not none %} ({{ "%.0f"|format(step.confidence * 100) }}%){% endif %}
+      {%- if step.note %} — {{ step.note }}{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% if shown_failed_step %}
+  <hr>
+  {% if profile.face_verification_disabled %}
+    <p class="text-danger mb-0">
+      For your security, Face Verification has been locked. Please instruct the customer to visit a JOJO agency.
+    </p>
+  {% else %}
+    <p class="mb-0">Verification Failed. Please try again.</p>
+    <p class="mb-0">Remaining Attempts: <strong>{{ 3 - profile.face_verification_failure_count }}</strong></p>
+    {% if profile.face_verification_locked_until %}
+      <p class="text-muted small mb-0">Locked until {{ profile.face_verification_locked_until }}.</p>
+    {% endif %}
+  {% endif %}
+  {% endif %}
+</div>
+{% endif %}
+{% endif %}

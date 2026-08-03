@@ -51,6 +51,7 @@ export function SettingsScreen() {
 
         <SettingsRow label="Personal Information" onPress={() => router.push('/personal-info')} />
         <SettingsRow label="Identity Verification" onPress={() => router.push('/identity-verification')} />
+        <SettingsRow label="Face Identity Verification" onPress={() => router.push('/create-face-identity')} />
 
         <ThemedView type="backgroundElement" style={styles.row}>
           <ThemedView style={styles.biometricRow}>

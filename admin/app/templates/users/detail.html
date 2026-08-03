@@ -25,6 +25,8 @@
       <dl class="row mb-0">
         <dt class="col-sm-6">Security Recovery Code</dt>
         <dd class="col-sm-6">{{ "Created" if detail.has_recovery_code else "Not Created" }}</dd>
+        <dt class="col-sm-6">Login PIN</dt>
+        <dd class="col-sm-6">{{ "Set" if detail.has_login_pin else "Not Set" }}</dd>
         <dt class="col-sm-6">Biometric Authentication</dt>
         <dd class="col-sm-6">{{ "Enabled" if profile.biometric_enabled else "Disabled" }}</dd>
       </dl>
@@ -97,6 +99,12 @@
         {% endif %}
         {% if wallet %}
         <a href="{{ url_for('balance.adjust_form', wallet_id=wallet.id) }}" class="btn btn-outline-secondary btn-sm">Adjust Balance</a>
+        {% endif %}
+        {% if detail.has_login_pin and current_user.is_super_administrator %}
+        <form method="post" action="{{ url_for('users.reset_login_pin', user_id=profile.id) }}" data-confirm="Reset this user's Login PIN? Only do this after verifying their identity in person.">
+          {{ csrf_field() }}
+          <button type="submit" class="btn btn-outline-danger btn-sm">Reset Login PIN</button>
+        </form>
         {% endif %}
       </div>
     </div>

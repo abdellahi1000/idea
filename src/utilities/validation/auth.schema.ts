@@ -13,3 +13,19 @@ export const signInSchema = z.object({
   password: z.string().min(1, 'Enter your password'),
 });
 export type SignInFormValues = z.infer<typeof signInSchema>;
+
+export const phoneSignInSchema = z.object({
+  phone: z.string().min(7, 'Enter a valid phone number'),
+  pin: z.string().regex(/^[0-9]{4,6}$/, 'PIN must be 4-6 digits'),
+});
+export type PhoneSignInFormValues = z.infer<typeof phoneSignInSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Enter a valid email address'),
+});
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

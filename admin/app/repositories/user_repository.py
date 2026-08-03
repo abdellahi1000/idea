@@ -98,6 +98,7 @@ def get_user_detail(user_id: str) -> dict[str, Any] | None:
         "profile": profile,
         "identity_verifications": identity_verifications,
         "has_recovery_code": bool(recovery_status.data["has_code"]) if recovery_status and recovery_status.data else False,
+        "has_login_pin": bool(profile.get("pin_hash")),
     }
 
 
@@ -127,3 +128,9 @@ def update_status(user_id: str, status: str) -> None:
 def update_admin_notes(user_id: str, notes: str) -> None:
     client = get_service_client()
     client.table("profiles").update({"admin_notes": notes}).eq("id", user_id).execute()
+
+
+def reset_login_pin(user_id: str, admin_id: str) -> None:
+    get_service_client().rpc(
+        "admin_reset_login_pin", {"p_user_id": user_id, "p_admin_id": admin_id}
+    ).execute()

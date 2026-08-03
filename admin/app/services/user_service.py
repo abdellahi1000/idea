@@ -27,3 +27,10 @@ def activate_account(user_id: str, admin_id: str) -> None:
 def save_admin_notes(user_id: str, admin_id: str, notes: str) -> None:
     user_repository.update_admin_notes(user_id, notes)
     log_admin_action(admin_id=admin_id, action="user.notes_updated", entity_table="profiles", entity_id=user_id)
+
+
+def reset_login_pin(user_id: str, admin_id: str) -> None:
+    # admin_reset_login_pin() writes its own audit_logs row atomically with
+    # the update, so no separate log_admin_action() call here (avoids
+    # double-logging, same pattern as recovery_code_service.reset()).
+    user_repository.reset_login_pin(user_id, admin_id)

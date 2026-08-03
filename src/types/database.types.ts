@@ -32,6 +32,10 @@ export interface Database {
           approval_rejection_reason: string | null;
           approved_at: string | null;
           approved_by: string | null;
+          face_verification_failure_count: number;
+          face_verification_locked_until: string | null;
+          face_verification_disabled: boolean;
+          face_identity_prompt_skipped: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -50,6 +54,7 @@ export interface Database {
           date_of_birth: string | null;
           profile_picture_path: string | null;
           biometric_enabled: boolean;
+          face_identity_prompt_skipped: boolean;
         }>;
         Relationships: [];
       };
@@ -265,6 +270,49 @@ export interface Database {
         Update: never;
         Relationships: [];
       };
+      face_identities: {
+        Row: {
+          id: string;
+          user_id: string;
+          storage_path: string;
+          status: 'active' | 'reinitializing';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: { user_id: string; storage_path: string };
+        Update: never;
+        Relationships: [];
+      };
+      face_verification_attempts: {
+        Row: {
+          id: string;
+          user_id: string;
+          device_transfer_request_id: string | null;
+          last_face_path: string;
+          challenge: Json;
+          status: 'pending' | 'processing' | 'approved' | 'rejected' | 'expired';
+          ai_result: Json | null;
+          created_at: string;
+          resolved_at: string | null;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      qr_transfer_codes: {
+        Row: {
+          id: string;
+          user_id: string;
+          device_transfer_request_id: string | null;
+          code: string;
+          status: 'pending' | 'used' | 'expired';
+          expires_at: string;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
     };
     Views: {
       security_recovery_codes_status: {
@@ -309,6 +357,10 @@ export interface Database {
         Args: { p_device_id: string };
         Returns: Database['public']['Tables']['devices']['Row'];
       };
+      register_device: {
+        Args: { p_device_installation_id: string; p_device_name: string; p_platform: string };
+        Returns: Database['public']['Tables']['devices']['Row'];
+      };
       check_recovery_code_available: {
         Args: { p_code: string };
         Returns: boolean;
@@ -316,6 +368,39 @@ export interface Database {
       reveal_recovery_code_once: {
         Args: Record<string, never>;
         Returns: string | null;
+      };
+      get_public_settings: {
+        Args: Record<string, never>;
+        Returns: Json;
+      };
+      submit_first_face_identity: {
+        Args: { p_storage_path: string };
+        Returns: undefined;
+      };
+      start_device_transfer: {
+        Args: {
+          p_verification_method: 'qr_code' | 'face_id' | 'fingerprint';
+          p_device_installation_id: string;
+          p_device_name: string;
+          p_platform: 'ios' | 'android' | 'web';
+        };
+        Returns: { request_id: string; to_device_id: string }[];
+      };
+      create_qr_transfer_code: {
+        Args: { p_request_id: string };
+        Returns: { code: string; expires_at: string }[];
+      };
+      approve_qr_transfer: {
+        Args: { p_code: string };
+        Returns: undefined;
+      };
+      submit_face_verification_attempt: {
+        Args: { p_request_id: string; p_storage_path: string; p_challenge: Json };
+        Returns: string;
+      };
+      complete_device_transfer: {
+        Args: { p_request_id: string; p_recovery_code: string };
+        Returns: undefined;
       };
       generate_recovery_code_candidate: {
         Args: Record<string, never>;

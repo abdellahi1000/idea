@@ -14,6 +14,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const session = useSessionStore((state) => state.session);
   const isLoading = useSessionStore((state) => state.isLoading);
+  const isPasswordRecovery = useSessionStore((state) => state.isPasswordRecovery);
 
   useEffect(() => {
     startSessionListener();
@@ -36,10 +37,12 @@ export default function RootLayout() {
           <Stack.Screen name="index" />
           <Stack.Screen name="save-recovery-code" />
           <Stack.Screen name="set-pin" />
-          <Stack.Protected guard={!!session}>
+          <Stack.Screen name="create-face-identity" />
+          <Stack.Screen name="new-device-detected" />
+          <Stack.Protected guard={!!session && !isPasswordRecovery}>
             <Stack.Screen name="(app)" />
           </Stack.Protected>
-          <Stack.Protected guard={!session}>
+          <Stack.Protected guard={!session || isPasswordRecovery}>
             <Stack.Screen name="(auth)" />
           </Stack.Protected>
         </Stack>

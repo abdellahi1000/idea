@@ -10,11 +10,13 @@ import { Spacing } from '@/constants/theme';
 import { useProfile } from '@/features/profile/hooks/use-profile';
 import { TransactionRow } from '@/features/transactions/components/transaction-row';
 import { useAccessGateCheck } from '@/features/home/hooks/use-access-gate-check';
+import { useFaceIdentityPrompt } from '@/features/home/hooks/use-face-identity-prompt';
 import { useRecentTransactions } from '@/features/home/hooks/use-recent-transactions';
 import { useWalletBalance } from '@/features/wallet/hooks/use-wallet-balance';
 
 export function HomeScreen() {
   useAccessGateCheck();
+  useFaceIdentityPrompt();
 
   const { data: profile } = useProfile();
   const { data: wallet, isLoading: isWalletLoading } = useWalletBalance();

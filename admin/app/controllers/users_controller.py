@@ -61,6 +61,15 @@ def lock(user_id: str):
     return redirect(url_for("users.detail", user_id=user_id))
 
 
+@users_bp.route("/<user_id>/reset-login-pin", methods=["POST"])
+@login_required
+@require_role("super_administrator")
+def reset_login_pin(user_id: str):
+    user_service.reset_login_pin(user_id, current_user.id)
+    flash("Login PIN reset. The user will be asked to set a new one after their next Email & Password sign-in.", "success")
+    return redirect(url_for("users.detail", user_id=user_id))
+
+
 @users_bp.route("/<user_id>/notes", methods=["POST"])
 @login_required
 @require_role("administrator", "super_administrator")

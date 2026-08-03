@@ -1,5 +1,6 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton } from '@/components/primary-button';
@@ -24,8 +25,22 @@ export function SaveRecoveryCodeScreen() {
 
   const onDone = async () => {
     setCode(null);
-    if (userId) {
+    Alert.alert('Recovery Code created', 'Your Recovery Code has been saved successfully.');
+
+    if (!userId) {
+      router.replace('/home');
+      return;
+    }
+    try {
+      // Re-derives the correct destination (Home, /set-pin, or
+      // /new-device-detected) - Home in the common case, but this can
+      // legitimately route elsewhere, e.g. an unrecognized device.
       await runAccessGate(userId);
+    } catch (error) {
+      // The Recovery Code itself is already saved at this point - don't
+      // strand the user on this screen over an unrelated routing hiccup.
+      console.warn('runAccessGate failed after saving recovery code', error);
+      router.replace('/home');
     }
   };
 

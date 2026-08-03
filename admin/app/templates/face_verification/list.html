@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% import "partials/pagination.html" as pagination %}
+{% import "partials/status_badge.html" as status_badge %}
+{% import "partials/empty_state.html" as empty_state %}
+{% block title %}Face Verification - JOJO Admin{% endblock %}
+{% block content %}
+<h3 class="mb-4">Face Verification</h3>
+
+<div class="btn-group mb-3">
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'pending' }}" href="{{ url_for('face_verification.list_attempts', status='pending') }}">Pending</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'approved' }}" href="{{ url_for('face_verification.list_attempts', status='approved') }}">Approved</a>
+  <a class="btn btn-outline-secondary {{ 'active' if status == 'rejected' }}" href="{{ url_for('face_verification.list_attempts', status='rejected') }}">Rejected</a>
+  <a class="btn btn-outline-secondary" href="{{ url_for('face_verification.list_disabled') }}">Disabled Accounts</a>
+</div>
+
+<div class="table-card">
+  {% if result.items %}
+  <table class="table align-middle">
+    <thead><tr><th>User</th><th>Failure Count</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for attempt in result.items %}
+      <tr>
+        <td>{{ (attempt.profiles or {}).get('full_name', '—') }}<br><span class="text-muted small">{{ (attempt.profiles or {}).get('phone', '') }}</span></td>
+        <td>{{ (attempt.profiles or {}).get('face_verification_failure_count', 0) }}</td>
+        <td>{{ attempt.created_at }}</td>
+        <td>{{ status_badge.render(attempt.status) }}</td>
+        <td>
+          {% if attempt.ai_result %}
+          <div class="small mb-2">
+            AI ({{ attempt.ai_result.provider }}):
+            <span class="badge {{ 'bg-success' if attempt.ai_result.matched else 'bg-danger' }}">
+              {{ 'likely match' if attempt.ai_result.matched else 'likely mismatch' }}
+            </span>
+            {% if attempt.ai_result.confidence is not none %}
+              ({{ "%.0f"|format(attempt.ai_result.confidence * 100) }}%)
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if attempt.status == 'pending' %}
+          <div class="d-flex gap-2">
+            <form method="post" action="{{ url_for('face_verification.ai_compare', attempt_id=attempt.id) }}">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-outline-primary">{{ 'Re-run' if attempt.ai_result else 'Run' }} AI Compare</button>
+            </form>
+            <form method="post" action="{{ url_for('face_verification.approve', attempt_id=attempt.id) }}" data-confirm="Approve this Face Verification attempt?">
+              {{ csrf_field() }}
+              <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+            </form>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#reject-{{ attempt.id }}">Reject</button>
+          </div>
+          <div class="collapse mt-2" id="reject-{{ attempt.id }}">
+            <form method="post" action="{{ url_for('face_verification.reject', attempt_id=attempt.id) }}" data-confirm="Reject this Face Verification attempt?">
+              {{ csrf_field() }}
+              <textarea class="form-control form-control-sm mb-2" name="reason" placeholder="Reason" required></textarea>
+              <button type="submit" class="btn btn-sm btn-danger">Confirm Reject</button>
+            </form>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.render(result, 'face_verification.list_attempts', {'status': status}) }}
+  {% else %}
+    {{ empty_state.render("No requests in this status.") }}
+  {% endif %}
+</div>
+{% endblock %}
