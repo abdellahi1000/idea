@@ -53,6 +53,16 @@ export async function runAccessGate(userId: string): Promise<void> {
     return;
   }
 
+  if (currentDevice?.status === 'transferred' || currentDevice?.status === 'disabled') {
+    await authService.signOut();
+    Alert.alert(
+      'Device no longer linked',
+      'This device is no longer linked to your account. You must authenticate again if you wish to use it in the future.',
+    );
+    router.replace('/sign-in');
+    return;
+  }
+
   const hasOtherActiveDevice = await deviceRepository.hasActiveDevice(userId);
   if (!hasOtherActiveDevice) {
     // First device ever registered for this account - no transfer needed.

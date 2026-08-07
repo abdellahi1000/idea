@@ -39,7 +39,9 @@ export const deviceTransferService = {
   },
 
   createQrCode: deviceTransferRepository.createQrCode,
+  previewQrCode: deviceTransferRepository.previewQrCode,
   approveQrCode: deviceTransferRepository.approveQrCode,
+  cancel: deviceTransferRepository.cancel,
   getRequest: deviceTransferRepository.getRequest,
   subscribeToRequest: deviceTransferRepository.subscribeToRequest,
   complete: deviceTransferRepository.complete,

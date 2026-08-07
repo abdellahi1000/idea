@@ -1,0 +1,592 @@
+diff --git a/node_modules/vision-camera-face-detector/android/.classpath b/node_modules/vision-camera-face-detector/android/.classpath
+new file mode 100644
+index 0000000..d9b92d6
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/.classpath
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<classpath>
++	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-25/"/>
++	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
++	<classpathentry kind="output" path="bin/default"/>
++</classpath>
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileChanges/last-build.bin b/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileChanges/last-build.bin
+new file mode 100644
+index 0000000..f76dd23
+Binary files /dev/null and b/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileChanges/last-build.bin differ
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileHashes/fileHashes.lock b/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileHashes/fileHashes.lock
+new file mode 100644
+index 0000000..b6797b6
+Binary files /dev/null and b/node_modules/vision-camera-face-detector/android/.gradle/6.8/fileHashes/fileHashes.lock differ
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/6.8/gc.properties b/node_modules/vision-camera-face-detector/android/.gradle/6.8/gc.properties
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/checksums/checksums.lock b/node_modules/vision-camera-face-detector/android/.gradle/checksums/checksums.lock
+new file mode 100644
+index 0000000..b114f5b
+Binary files /dev/null and b/node_modules/vision-camera-face-detector/android/.gradle/checksums/checksums.lock differ
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/configuration-cache/gc.properties b/node_modules/vision-camera-face-detector/android/.gradle/configuration-cache/gc.properties
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/vision-camera-face-detector/android/.gradle/vcs-1/gc.properties b/node_modules/vision-camera-face-detector/android/.gradle/vcs-1/gc.properties
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/vision-camera-face-detector/android/.project b/node_modules/vision-camera-face-detector/android/.project
+new file mode 100644
+index 0000000..edc63c4
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/.project
+@@ -0,0 +1,34 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>vision-camera-face-detector</name>
++	<comment>Project vision-camera-face-detector created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.jdt.core.javabuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.jdt.core.javanature</nature>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1786063649683</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/vision-camera-face-detector/android/.settings/org.eclipse.buildship.core.prefs b/node_modules/vision-camera-face-detector/android/.settings/org.eclipse.buildship.core.prefs
+new file mode 100644
+index 0000000..1675490
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/.settings/org.eclipse.buildship.core.prefs
+@@ -0,0 +1,2 @@
++connection.project.dir=../../../android
++eclipse.preferences.version=1
+diff --git a/node_modules/vision-camera-face-detector/android/build.gradle b/node_modules/vision-camera-face-detector/android/build.gradle
+index 55bfaac..74a64f4 100644
+--- a/node_modules/vision-camera-face-detector/android/build.gradle
++++ b/node_modules/vision-camera-face-detector/android/build.gradle
+@@ -18,10 +18,11 @@ def safeExtGet(prop, fallback) {
+ }
+ 
+ android {
+-    compileSdkVersion safeExtGet('VisionCameraFaceDetector_compileSdkVersion', 30)
++    namespace 'com.visioncamerafacedetector'
++    compileSdkVersion safeExtGet('VisionCameraFaceDetector_compileSdkVersion', 36)
+     defaultConfig {
+-        minSdkVersion safeExtGet('VisionCameraFaceDetector_minSdkVersion', 21)
+-        targetSdkVersion safeExtGet('VisionCameraFaceDetector_targetSdkVersion', 31)
++        minSdkVersion safeExtGet('VisionCameraFaceDetector_minSdkVersion', 24)
++        targetSdkVersion safeExtGet('VisionCameraFaceDetector_targetSdkVersion', 36)
+         versionCode 1
+         versionName "1.0"
+ 
+@@ -48,7 +49,7 @@ repositories {
+         url("$rootDir/../node_modules/react-native/android")
+     }
+     google()
+-    jcenter()
++    mavenCentral()
+ }
+ 
+ dependencies {
+@@ -56,6 +57,6 @@ dependencies {
+     implementation "com.facebook.react:react-native:+"  // From node_modules
+     implementation 'androidx.annotation:annotation:1.1.0'
+     api project(":react-native-vision-camera")
+-    implementation "androidx.camera:camera-core:1.1.0-alpha06"
+-    implementation 'com.google.mlkit:face-detection:16.1.2'
++    compileOnly "androidx.camera:camera-core:1.5.0-alpha03"
++    implementation 'com.google.mlkit:face-detection:16.1.7'
+ }
+diff --git a/node_modules/vision-camera-face-detector/android/build/generated/source/buildConfig/debug/com/visioncamerafacedetector/BuildConfig.java b/node_modules/vision-camera-face-detector/android/build/generated/source/buildConfig/debug/com/visioncamerafacedetector/BuildConfig.java
+new file mode 100644
+index 0000000..4f21293
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/generated/source/buildConfig/debug/com/visioncamerafacedetector/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.visioncamerafacedetector;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.visioncamerafacedetector";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..b702492
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.visioncamerafacedetector" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..5b8b3fa
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.visioncamerafacedetector",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/vision-camera-face-detector/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/vision-camera-face-detector/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/vision-camera-face-detector/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..c847571
+Binary files /dev/null and b/node_modules/vision-camera-face-detector/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/vision-camera-face-detector/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..f7a5abd
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Fri Aug 07 00:34:09 GMT 2026
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..3d7e2d6
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\build\generated\res\resValues\debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugAssets/merger.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+new file mode 100644
+index 0000000..67248af
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\debug\assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\build\intermediates\shader_assets\debug\compileDebugShaders\out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..25420bd
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\debug\jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..50be639
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\debug\shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/vision-camera-face-detector/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/vision-camera-face-detector/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..478640c
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.visioncamerafacedetector" >
++4
++5    <uses-sdk android:minSdkVersion="24" />
++6
++7</manifest>
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/vision-camera-face-detector/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..b702492
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.visioncamerafacedetector" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/vision-camera-face-detector/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/vision-camera-face-detector/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/vision-camera-face-detector/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/vision-camera-face-detector/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..544f43e
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1 @@
++com.visioncamerafacedetector
+diff --git a/node_modules/vision-camera-face-detector/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/vision-camera-face-detector/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..902eeb0
+--- /dev/null
++++ b/node_modules/vision-camera-face-detector/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,17 @@
++-- Merging decision tree log ---
++manifest
++ADDED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml:1:1-4:12
++INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml:1:1-4:12
++	package
++		ADDED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml:2:11-49
++		INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml
++	xmlns:android
++		ADDED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml:1:11-69
++uses-sdk
++INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml
++INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from C:\Users\hp\idea\MyApp\node_modules\vision-camera-face-detector\android\src\main\AndroidManifest.xml
+diff --git a/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPlugin.java b/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPlugin.java
+index 3e4b3ff..9d97f68 100644
+--- a/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPlugin.java
++++ b/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPlugin.java
+@@ -1,177 +1,73 @@
+ package com.visioncamerafacedetector;
+ 
+-
+-import static java.lang.Math.ceil;
+-
+ import android.annotation.SuppressLint;
+-import android.graphics.PointF;
+-import android.graphics.Rect;
+ import android.media.Image;
+-import android.util.Log;
+-
+ 
+-import androidx.camera.core.ImageProxy;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+-import com.facebook.react.bridge.Arguments;
+-import com.facebook.react.bridge.WritableMap;
+-import com.facebook.react.bridge.WritableNativeArray;
+-import com.facebook.react.bridge.WritableNativeMap;
+ import com.google.android.gms.tasks.Task;
+ import com.google.android.gms.tasks.Tasks;
+ import com.google.mlkit.vision.common.InputImage;
+ import com.google.mlkit.vision.face.Face;
+-import com.google.mlkit.vision.face.FaceContour;
+ import com.google.mlkit.vision.face.FaceDetection;
+ import com.google.mlkit.vision.face.FaceDetector;
+-
+-
+ import com.google.mlkit.vision.face.FaceDetectorOptions;
+-import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin;
+-
++import com.mrousavy.camera.frameprocessors.Frame;
++import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin;
++import com.mrousavy.camera.frameprocessors.VisionCameraProxy;
+ 
++import java.util.ArrayList;
++import java.util.HashMap;
+ import java.util.List;
+-
++import java.util.Map;
+ 
+ public class VisionCameraFaceDetectorPlugin extends FrameProcessorPlugin {
+ 
+-  FaceDetectorOptions options =
+-    new FaceDetectorOptions.Builder()
+-      .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+-      .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+-      .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+-      .setMinFaceSize(0.15f)
+-      .build();
+-
+-  FaceDetector faceDetector = FaceDetection.getClient(options);
+-
+-  private WritableMap processBoundingBox(Rect boundingBox) {
+-    WritableMap bounds = Arguments.createMap();
+-
+-    // Calculate offset (we need to center the overlay on the target)
+-    Double offsetX =  (boundingBox.exactCenterX() - ceil(boundingBox.width())) / 2.0f;
+-    Double offsetY =  (boundingBox.exactCenterY() - ceil(boundingBox.height())) / 2.0f;
+-
+-    Double x = boundingBox.right + offsetX;
+-    Double y = boundingBox.top + offsetY;
+-
+-
+-
+-    bounds.putDouble("x", boundingBox.centerX() + (boundingBox.centerX() - x));
+-    bounds.putDouble("y", boundingBox.centerY() + (y - boundingBox.centerY()));
+-    bounds.putDouble("width", boundingBox.width());
+-    bounds.putDouble("height", boundingBox.height());
+-
+-
+-    bounds.putDouble("boundingCenterX", boundingBox.centerX());
+-    bounds.putDouble("boundingCenterY", boundingBox.centerY());
+-    bounds.putDouble("boundingExactCenterX", boundingBox.exactCenterX());
+-    bounds.putDouble("boundingExactCenterY", boundingBox.exactCenterY());
+-
+-    return bounds;
++  private final FaceDetector faceDetector;
++
++  VisionCameraFaceDetectorPlugin(@NonNull VisionCameraProxy proxy, @Nullable Map<String, Object> options) {
++    super();
++    FaceDetectorOptions detectorOptions =
++      new FaceDetectorOptions.Builder()
++        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
++        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
++        .setMinFaceSize(0.15f)
++        .build();
++    faceDetector = FaceDetection.getClient(detectorOptions);
+   }
+ 
+-  private WritableMap  processFaceContours(Face face) {
+-    // All faceContours
+-    int[] faceContoursTypes =
+-      new int[] {
+-        FaceContour.FACE,
+-        FaceContour.LEFT_EYEBROW_TOP,
+-        FaceContour.LEFT_EYEBROW_BOTTOM,
+-        FaceContour.RIGHT_EYEBROW_TOP,
+-        FaceContour.RIGHT_EYEBROW_BOTTOM,
+-        FaceContour.LEFT_EYE,
+-        FaceContour.RIGHT_EYE,
+-        FaceContour.UPPER_LIP_TOP,
+-        FaceContour.UPPER_LIP_BOTTOM,
+-        FaceContour.LOWER_LIP_TOP,
+-        FaceContour.LOWER_LIP_BOTTOM,
+-        FaceContour.NOSE_BRIDGE,
+-        FaceContour.NOSE_BOTTOM,
+-        FaceContour.LEFT_CHEEK,
+-        FaceContour.RIGHT_CHEEK
+-      };
+-
+-    String[] faceContoursTypesStrings = {
+-        "FACE",
+-        "LEFT_EYEBROW_TOP",
+-        "LEFT_EYEBROW_BOTTOM",
+-        "RIGHT_EYEBROW_TOP",
+-        "RIGHT_EYEBROW_BOTTOM",
+-        "LEFT_EYE",
+-        "RIGHT_EYE",
+-        "UPPER_LIP_TOP",
+-        "UPPER_LIP_BOTTOM",
+-        "LOWER_LIP_TOP",
+-        "LOWER_LIP_BOTTOM",
+-        "NOSE_BRIDGE",
+-        "NOSE_BOTTOM",
+-        "LEFT_CHEEK",
+-        "RIGHT_CHEEK"
+-      };
+-
+-    WritableMap faceContoursTypesMap = new WritableNativeMap();
+-
+-      for (int i = 0; i < faceContoursTypesStrings.length; i++) {
+-        FaceContour contour = face.getContour(faceContoursTypes[i]);
+-        List<PointF> points = contour.getPoints();
+-        WritableNativeArray pointsArray = new WritableNativeArray();
+-
+-          for (int j = 0; j < points.size(); j++) {
+-            WritableMap currentPointsMap = new WritableNativeMap();
+-
+-            currentPointsMap.putDouble("x", points.get(j).x);
+-            currentPointsMap.putDouble("y", points.get(j).y);
+-
+-            pointsArray.pushMap(currentPointsMap);
+-          }
+-          faceContoursTypesMap.putArray(faceContoursTypesStrings[contour.getFaceContourType() - 1], pointsArray);
+-      }
+-
+-    return faceContoursTypesMap;
+-  }
+-
+-  @SuppressLint("NewApi")
++  @SuppressLint("UnsafeOptInUsageError")
++  @Nullable
+   @Override
+-  public Object callback(ImageProxy frame, Object[] params) {
+-    @SuppressLint("UnsafeOptInUsageError")
++  public Object callback(@NonNull Frame frame, @Nullable Map<String, Object> params) throws Throwable {
+     Image mediaImage = frame.getImage();
+-
+-    if (mediaImage != null) {
+-      InputImage image = InputImage.fromMediaImage(mediaImage, frame.getImageInfo().getRotationDegrees());
+-      Task<List<Face>> task = faceDetector.process(image);
+-      WritableNativeArray array = new WritableNativeArray();
+-      try {
+-        List<Face> faces = Tasks.await(task);
+-        for (Face face : faces) {
+-          WritableMap map =  new WritableNativeMap();
+-
+-          map.putDouble("rollAngle", face.getHeadEulerAngleZ()); // Head is rotated to the left rotZ degrees
+-          map.putDouble("pitchAngle", face.getHeadEulerAngleX()); // Head is rotated to the right rotX degrees
+-          map.putDouble("yawAngle", face.getHeadEulerAngleY());  // Head is tilted sideways rotY degrees
+-          map.putDouble("leftEyeOpenProbability", face.getLeftEyeOpenProbability());
+-          map.putDouble("rightEyeOpenProbability", face.getRightEyeOpenProbability());
+-          map.putDouble("smilingProbability", face.getSmilingProbability());
+-          
+-
+-          WritableMap contours = processFaceContours(face);
+-          WritableMap bounds = processBoundingBox(face.getBoundingBox());
+-
+-          map.putMap("bounds", bounds);
+-          map.putMap("contours", contours);
+-
+-          array.pushMap(map);
+-        }
+-        return array;
+-      } catch (Exception e) {
+-        e.printStackTrace();
+-      }
++    int rotationDegrees = frame.getImageProxy().getImageInfo().getRotationDegrees();
++    InputImage image = InputImage.fromMediaImage(mediaImage, rotationDegrees);
++
++    List<Object> results = new ArrayList<>();
++    Task<List<Face>> task = faceDetector.process(image);
++    List<Face> faces = Tasks.await(task);
++
++    for (Face face : faces) {
++      Map<String, Object> map = new HashMap<>();
++      map.put("rollAngle", (double) face.getHeadEulerAngleZ());
++      map.put("pitchAngle", (double) face.getHeadEulerAngleX());
++      map.put("yawAngle", (double) face.getHeadEulerAngleY());
++      map.put("leftEyeOpenProbability", face.getLeftEyeOpenProbability() != null ? (double) face.getLeftEyeOpenProbability() : 1.0);
++      map.put("rightEyeOpenProbability", face.getRightEyeOpenProbability() != null ? (double) face.getRightEyeOpenProbability() : 1.0);
++      map.put("smilingProbability", face.getSmilingProbability() != null ? (double) face.getSmilingProbability() : 0.0);
++
++      Map<String, Object> bounds = new HashMap<>();
++      bounds.put("x", (double) face.getBoundingBox().left);
++      bounds.put("y", (double) face.getBoundingBox().top);
++      bounds.put("width", (double) face.getBoundingBox().width());
++      bounds.put("height", (double) face.getBoundingBox().height());
++      map.put("bounds", bounds);
++
++      results.add(map);
+     }
+ 
+-    return null;
+-  }
+-
+-
+-  VisionCameraFaceDetectorPlugin() {
+-    super("scanFaces");
++    return results;
+   }
+ }
+diff --git a/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPluginPackage.java b/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPluginPackage.java
+index 157493e..32d9124 100644
+--- a/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPluginPackage.java
++++ b/node_modules/vision-camera-face-detector/android/src/main/java/com/visioncamerafacedetector/VisionCameraFaceDetectorPluginPackage.java
+@@ -6,24 +6,28 @@ import com.facebook.react.ReactPackage;
+ import com.facebook.react.bridge.NativeModule;
+ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.uimanager.ViewManager;
++import com.mrousavy.camera.frameprocessors.FrameProcessorPluginRegistry;
+ 
+-import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin;
+ import java.util.Collections;
+ import java.util.List;
+ 
+ public class VisionCameraFaceDetectorPluginPackage implements ReactPackage {
++  static {
++    FrameProcessorPluginRegistry.addFrameProcessorPlugin(
++      "scanFaces",
++      (proxy, options) -> new VisionCameraFaceDetectorPlugin(proxy, options)
++    );
++  }
++
+   @NonNull
+-  @org.jetbrains.annotations.NotNull
+   @Override
+-  public List<NativeModule> createNativeModules(@NonNull @org.jetbrains.annotations.NotNull ReactApplicationContext reactContext) {
+-    FrameProcessorPlugin.register(new VisionCameraFaceDetectorPlugin());
++  public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+     return Collections.emptyList();
+   }
+ 
+   @NonNull
+-  @org.jetbrains.annotations.NotNull
+   @Override
+-  public List<ViewManager> createViewManagers(@NonNull @org.jetbrains.annotations.NotNull ReactApplicationContext reactContext) {
++  public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+     return Collections.emptyList();
+   }
+ }

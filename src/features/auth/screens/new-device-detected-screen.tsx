@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
+import { usePreventScreenCapture, useScreenshotListener } from 'expo-screen-capture';
 
 import { FaceRecordingCamera } from '@/components/face-recording-camera';
 import { PrimaryButton } from '@/components/primary-button';
@@ -50,10 +51,11 @@ async function getFaceVerificationDenialMessage(userId: string): Promise<{ title
 type Step =
   | { kind: 'loading' }
   | { kind: 'choose'; settings: PublicSettings }
-  | { kind: 'qr'; requestId: string; code: string }
+  | { kind: 'qr'; requestId: string; code: string; expiresAt: string }
   | { kind: 'face-record'; requestId: string; challenge: string[] }
   | { kind: 'waiting-review'; requestId: string }
-  | { kind: 'recovery-code'; requestId: string };
+  | { kind: 'recovery-code'; requestId: string }
+  | { kind: 'activating'; requestId: string };
 
 export function NewDeviceDetectedScreen() {
   const userId = useSessionStore((state) => state.session?.user.id);
@@ -61,6 +63,22 @@ export function NewDeviceDetectedScreen() {
   const [recoveryCode, setRecoveryCode] = useState('');
   const [isCompleting, setIsCompleting] = useState(false);
   const unsubscribeRef = useRef<(() => void) | null>(null);
+  const stepRef = useRef<Step>(step);
+  useEffect(() => {
+    stepRef.current = step;
+  }, [step]);
+
+  usePreventScreenCapture();
+
+  useScreenshotListener(() => {
+    const current = stepRef.current;
+    if (current.kind === 'qr' || current.kind === 'face-record' || current.kind === 'recovery-code') {
+      deviceTransferService.cancel(current.requestId).catch(() => {});
+      unsubscribeRef.current?.();
+      Alert.alert('Security policy violation', 'Device transfer has been cancelled. Please restart the transfer from the beginning.');
+      setStep({ kind: 'choose', settings: {} });
+    }
+  });
 
   useEffect(() => {
     settingsRepository
@@ -78,6 +96,10 @@ export function NewDeviceDetectedScreen() {
     unsubscribeRef.current = deviceTransferService.subscribeToRequest(requestId, (request) => {
       if (request.status === 'approved') {
         setStep({ kind: 'recovery-code', requestId });
+      } else if (request.status === 'activating') {
+        setStep({ kind: 'activating', requestId });
+      } else if (request.status === 'completed') {
+        router.replace('/home');
       } else if (request.status === 'denied') {
         if (userId) {
           getFaceVerificationDenialMessage(userId).then(({ title, body }) => Alert.alert(title, body));
@@ -87,6 +109,9 @@ export function NewDeviceDetectedScreen() {
             'Your Face Identity verification was not approved. Please try again or visit a JOJO agency.',
           );
         }
+        setStep({ kind: 'choose', settings: {} });
+      } else if (request.status === 'cancelled') {
+        Alert.alert('Transfer cancelled', 'The transfer was cancelled from your trusted device. Please start again.');
         setStep({ kind: 'choose', settings: {} });
       } else if (request.status === 'expired') {
         Alert.alert('Request expired', 'Please start again.');
@@ -98,11 +123,21 @@ export function NewDeviceDetectedScreen() {
   const onChooseQr = async () => {
     try {
       const { requestId } = await deviceTransferService.start('qr_code');
-      const { code } = await deviceTransferService.createQrCode(requestId);
-      setStep({ kind: 'qr', requestId, code });
+      const { code, expiresAt } = await deviceTransferService.createQrCode(requestId);
+      setStep({ kind: 'qr', requestId, code, expiresAt });
       watchRequest(requestId);
     } catch (error) {
       Alert.alert('Could not start QR transfer', error instanceof Error ? error.message : 'Please try again.');
+    }
+  };
+
+  const onQrExpired = async (requestId: string) => {
+    try {
+      const { code, expiresAt } = await deviceTransferService.createQrCode(requestId);
+      setStep({ kind: 'qr', requestId, code, expiresAt });
+    } catch (error) {
+      Alert.alert('Could not refresh QR Code', error instanceof Error ? error.message : 'Please try again.');
+      setStep({ kind: 'choose', settings: {} });
     }
   };
 
@@ -132,7 +167,7 @@ export function NewDeviceDetectedScreen() {
     setIsCompleting(true);
     try {
       await deviceTransferService.complete(requestId, recoveryCode);
-      router.replace('/home');
+      setStep({ kind: 'activating', requestId });
     } catch (error) {
       Alert.alert('Incorrect recovery code', error instanceof Error ? error.message : 'Please try again.');
     } finally {
@@ -179,10 +214,10 @@ export function NewDeviceDetectedScreen() {
         <ThemedView style={styles.centered}>
           <ThemedText type="title">Scan with your trusted device</ThemedText>
           <ThemedText themeColor="textSecondary">
-            Open JOJO on your other device, go to Devices, and scan this code within 5 minutes.
+            Open JOJO on your other device, go to Settings, and scan this code.
           </ThemedText>
           <QRCode value={step.code} size={220} />
-          <ActivityIndicator />
+          <QrCountdown key={step.expiresAt} expiresAt={step.expiresAt} onExpired={() => onQrExpired(step.requestId)} />
         </ThemedView>
       </SafeAreaView>
     );
@@ -211,6 +246,18 @@ export function NewDeviceDetectedScreen() {
     );
   }
 
+  if (step.kind === 'activating') {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <ThemedView style={styles.centered}>
+          <ActivityIndicator />
+          <ThemedText type="smallBold">Your account is being activated on the new device.</ThemedText>
+          <ThemedText themeColor="textSecondary">Please wait 1–5 minutes.</ThemedText>
+        </ThemedView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.container}>
@@ -234,6 +281,32 @@ export function NewDeviceDetectedScreen() {
         />
       </ThemedView>
     </SafeAreaView>
+  );
+}
+
+function QrCountdown({ expiresAt, onExpired }: { expiresAt: string; onExpired: () => void }) {
+  const [secondsLeft, setSecondsLeft] = useState(() =>
+    Math.max(0, Math.round((new Date(expiresAt).getTime() - Date.now()) / 1000)),
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const remaining = Math.max(0, Math.round((new Date(expiresAt).getTime() - Date.now()) / 1000));
+      setSecondsLeft(remaining);
+      if (remaining <= 0) {
+        clearInterval(interval);
+        onExpired();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expiresAt]);
+
+  return (
+    <ThemedText themeColor="textSecondary">
+      This code expires in {secondsLeft}s and will refresh automatically.
+    </ThemedText>
   );
 }
 

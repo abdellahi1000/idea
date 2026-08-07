@@ -36,6 +36,10 @@ export interface Database {
           face_verification_locked_until: string | null;
           face_verification_disabled: boolean;
           face_identity_prompt_skipped: boolean;
+          device_transfer_recovery_failure_count: number;
+          device_transfer_recovery_locked_until: string | null;
+          device_transfer_recovery_disabled: boolean;
+          device_transfer_cooldown_until: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -149,7 +153,9 @@ export interface Database {
           user_id: string;
           from_device_id: string | null;
           to_device_id: string | null;
-          status: 'pending' | 'approved' | 'denied' | 'expired';
+          verification_method: 'qr_code' | 'face_id' | 'fingerprint';
+          status: 'pending' | 'approved' | 'activating' | 'completed' | 'denied' | 'cancelled' | 'expired';
+          activates_at: string | null;
           requested_at: string;
           resolved_at: string | null;
         };
@@ -158,7 +164,10 @@ export interface Database {
           from_device_id?: string | null;
           to_device_id?: string | null;
         };
-        Update: Partial<{ status: 'pending' | 'approved' | 'denied' | 'expired'; resolved_at: string }>;
+        Update: Partial<{
+          status: 'pending' | 'approved' | 'activating' | 'completed' | 'denied' | 'cancelled' | 'expired';
+          resolved_at: string;
+        }>;
         Relationships: [];
       };
       identity_verification: {
@@ -390,8 +399,16 @@ export interface Database {
         Args: { p_request_id: string };
         Returns: { code: string; expires_at: string }[];
       };
-      approve_qr_transfer: {
+      preview_qr_transfer: {
         Args: { p_code: string };
+        Returns: { request_id: string; device_name: string; platform: string; requested_at: string }[];
+      };
+      approve_qr_transfer: {
+        Args: { p_code: string; p_approve?: boolean };
+        Returns: undefined;
+      };
+      cancel_device_transfer: {
+        Args: { p_request_id: string };
         Returns: undefined;
       };
       submit_face_verification_attempt: {

@@ -65,6 +65,8 @@ export function SettingsScreen() {
           </ThemedView>
         </ThemedView>
 
+        <SettingsRow label="Scan QR Code" onPress={() => router.push('/scan-device-qr')} />
+
         <SettingsRow label="Change Login PIN" onPress={() => router.push('/change-pin')} />
         <SettingsRow label="Security Recovery Code" onPress={() => router.push('/recovery-code')} />
 

@@ -29,8 +29,25 @@ export const deviceTransferRepository = {
     return { code: row.code, expiresAt: row.expires_at };
   },
 
-  async approveQrCode(code: string): Promise<void> {
-    const { error } = await supabase.rpc('approve_qr_transfer', { p_code: code });
+  async previewQrCode(code: string): Promise<{
+    requestId: string;
+    deviceName: string;
+    platform: string;
+    requestedAt: string;
+  }> {
+    const { data, error } = await supabase.rpc('preview_qr_transfer', { p_code: code });
+    if (error) throw error;
+    const row = data[0];
+    return { requestId: row.request_id, deviceName: row.device_name, platform: row.platform, requestedAt: row.requested_at };
+  },
+
+  async approveQrCode(code: string, approve: boolean): Promise<void> {
+    const { error } = await supabase.rpc('approve_qr_transfer', { p_code: code, p_approve: approve });
+    if (error) throw error;
+  },
+
+  async cancel(requestId: string): Promise<void> {
+    const { error } = await supabase.rpc('cancel_device_transfer', { p_request_id: requestId });
     if (error) throw error;
   },
 
