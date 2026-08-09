@@ -1,0 +1,100 @@
+diff --git a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/CameraDeviceDetails.kt b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/CameraDeviceDetails.kt
+index 76b6ab0..79dddfb 100644
+--- a/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/CameraDeviceDetails.kt
++++ b/node_modules/react-native-vision-camera/android/src/main/java/com/mrousavy/camera/core/CameraDeviceDetails.kt
+@@ -7,7 +7,7 @@ import android.util.Log
+ import android.util.Range
+ import android.util.Size
+ import android.util.SizeF
+-import androidx.camera.camera2.internal.Camera2CameraInfoImpl
++import androidx.camera.camera2.interop.Camera2CameraInfo
+ import androidx.camera.core.CameraInfo
+ import androidx.camera.core.DynamicRange
+ import androidx.camera.core.FocusMeteringAction
+@@ -64,10 +64,14 @@ class CameraDeviceDetails(private val cameraInfo: CameraInfo, extensionsManager:
+   private val cameraInfoInternal = cameraInfo as CameraInfoInternal
+ 
+   // Camera2 specific props
+-  private val camera2Details = cameraInfo as? Camera2CameraInfoImpl
+-  private val physicalDeviceIds = camera2Details?.cameraCharacteristicsMap?.keys ?: emptySet()
++  // Uses the public Camera2CameraInfo interop API rather than the internal Camera2CameraInfoImpl,
++  // whose class layout CameraX 1.6.0 refactored away in favor of a camera2-pipe backend - see
++  // patches/react-native-vision-camera+*.patch. Multi-cam physical-device introspection has no
++  // public equivalent, so it degrades to this class's existing single-camera fallback paths.
++  private val camera2Info = Camera2CameraInfo.from(cameraInfo)
++  private val physicalDeviceIds = emptySet<String>()
+   private val isMultiCam = physicalDeviceIds.size > 1
+-  private val cameraHardwareLevel = camera2Details?.cameraCharacteristicsCompat?.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
++  private val cameraHardwareLevel = camera2Info.getCameraCharacteristic(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
+   private val hardwareLevel = HardwareLevel.fromCameraHardwareLevel(
+     cameraHardwareLevel ?: CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY
+   )
+@@ -188,13 +192,7 @@ class CameraDeviceDetails(private val cameraInfo: CameraInfo, extensionsManager:
+   }
+ 
+   private fun getMinFocusDistanceCm(): Double {
+-    val device = cameraInfo as? Camera2CameraInfoImpl
+-    if (device == null) {
+-      // Device is not a Camera2 device.
+-      return 0.0
+-    }
+-
+-    val distance = device.cameraCharacteristicsCompat.get(CameraCharacteristics.LENS_INFO_MINIMUM_FOCUS_DISTANCE)
++    val distance = camera2Info.getCameraCharacteristic(CameraCharacteristics.LENS_INFO_MINIMUM_FOCUS_DISTANCE)
+     if (distance == null || distance == 0f) return 0.0
+     if (distance.isNaN() || distance.isInfinite()) return 0.0
+     // distance is in "diopters", meaning 1/meter. Convert to meters, then centi-meters
+@@ -202,13 +200,7 @@ class CameraDeviceDetails(private val cameraInfo: CameraInfo, extensionsManager:
+   }
+ 
+   private fun getIsoRange(): Range<Int> {
+-    val device = cameraInfo as? Camera2CameraInfoImpl
+-    if (device == null) {
+-      // Device is not a Camera2 device.
+-      return Range(0, 0)
+-    }
+-
+-    val range = device.cameraCharacteristicsCompat.get(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE)
++    val range = camera2Info.getCameraCharacteristic(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE)
+     return range ?: Range(0, 0)
+   }
+ 
+@@ -229,23 +221,9 @@ class CameraDeviceDetails(private val cameraInfo: CameraInfo, extensionsManager:
+   }
+ 
+   private fun getDeviceTypes(): List<DeviceType> {
+-    val defaultList = listOf(DeviceType.WIDE_ANGLE)
+-    val camera2Details = camera2Details ?: return defaultList
+-
+-    val deviceTypes = camera2Details.cameraCharacteristicsMap.map { (_, characteristics) ->
+-      val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: return@map DeviceType.WIDE_ANGLE
+-      val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS) ?: return@map DeviceType.WIDE_ANGLE
+-      val fov = getMaxFieldOfView(focalLengths, sensorSize)
+-
+-      return@map when {
+-        fov > 94 -> DeviceType.ULTRA_WIDE_ANGLE
+-        fov in 60f..94f -> DeviceType.WIDE_ANGLE
+-        fov < 60f -> DeviceType.TELEPHOTO
+-        else -> throw Error("Invalid Field Of View! ($fov)")
+-      }
+-    }
+-
+-    return deviceTypes
++    // Multi-cam physical-device enumeration has no public CameraX 1.6.0 equivalent to the old
++    // internal cameraCharacteristicsMap - single logical camera is reported instead.
++    return listOf(DeviceType.WIDE_ANGLE)
+   }
+ 
+   private fun getFieldOfView(focalLength: Float, sensorSize: SizeF): Double {
+@@ -263,9 +241,8 @@ class CameraDeviceDetails(private val cameraInfo: CameraInfo, extensionsManager:
+   }
+ 
+   private fun getMaxFieldOfView(): Double {
+-    val characteristics = camera2Details?.cameraCharacteristicsCompat ?: return 0.0
+-    val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: return 0.0
+-    val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS) ?: return 0.0
++    val sensorSize = camera2Info.getCameraCharacteristic(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: return 0.0
++    val focalLengths = camera2Info.getCameraCharacteristic(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS) ?: return 0.0
+     return getMaxFieldOfView(focalLengths, sensorSize)
+   }
+ }

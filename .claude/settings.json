@@ -1,5 +1,11 @@
 {
   "enabledPlugins": {
     "expo@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(JAVA_HOME=\"/c/Program Files/Java/jdk-17\" npx expo run:android)",
+      "Bash(echo \"EXIT:$?\")"
+    ]
   }
 }

@@ -1,0 +1,285 @@
+INFO         | Android emulator version 36.4.9.0 (build_id 14788078) (CL:N/A)
+INFO         | Graphics backend: gfxstream
+INFO         | Found systemPath C:\Users\hp\AppData\Local\Android\Sdk\system-images\android-36.1\google_apis_playstore\x86_64\
+WARNING      | Please update the emulator to one that supports the feature(s): VulkanVirtualQueue
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: 5073:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 5073:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 5073:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 807b:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 807b:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 807b:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: a081:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: a081:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: a081:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 788f:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 788f:a801:2302:0:5073:a801:2302:0
+INFO         | Ignore IPv6 address: 788f:a801:2302:0:5073:a801:2302:0
+INFO         | Guest GLES Driver: Auto (ext controls)
+INFO         | emuglConfig_init: vulkan_mode_selected:host gles_mode_selected:host
+INFO         | emuglConfig_get_vulkan_hardware_gpu_support_info: Found physical GPU 'Intel(R) UHD Graphics', type: VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU, apiVersion: 1.4.323, driverVersion: 0.405.2980
+
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasCompatibleHypervisor
+INFO         |      Ok: Hypervisor compatibility to run avd: `Medium` are met
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Medium` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU requirements to run avd: `Medium` are passed
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Medium` are met
+INFO         | Critical: Failed to load opengl32sw (The specified module could not be found.) (:0, )
+INFO         | Warning: Software OpenGL failed. Falling back to system OpenGL. (:0, )
+INFO         | Storing crashdata in: C:\Users\hp\AppData\Local\Temp\\AndroidEmulator\emu-crash-36.4.9.db, detection is enabled for process: 10856
+INFO         | Initializing gfxstream backend
+INFO         | android_startOpenglesRenderer: gpu info
+INFO         | GPU #1
+  Make: 8086
+  Model: Intel(R) UHD Graphics
+  Device ID: 4628
+
+INFO         | SharedLibrary::open for [C:\Users\hp\AppData\Local\Android\Sdk\emulator\qemu\windows-x86_64\lib64\vulkan\vulkan-1.dll]
+INFO         | SharedLibrary::open for [C:\Users\hp\AppData\Local\Android\Sdk\emulator\lib64\vulkan\vulkan-1.dll]
+INFO         | Added library: C:\Users\hp\AppData\Local\Android\Sdk\emulator\lib64\vulkan\vulkan-1.dll
+INFO         | Selecting Vulkan device: Intel(R) UHD Graphics, Version: 1.4.323
+INFO         | Initializing VkEmulation features:
+INFO         |     glInteropSupported: false
+INFO         |     useDeferredCommands: true
+INFO         |     createResourceWithRequirements: true
+INFO         |     useVulkanComposition: false
+INFO         |     useVulkanNativeSwapchain: false
+INFO         |     enable guestRenderDoc: false
+INFO         |     ASTC LDR emulation mode: Gpu
+INFO         |     enable ETC2 emulation: true
+INFO         |     enable Ycbcr emulation: false
+INFO         |     guestVulkanOnly: false
+INFO         |     useDedicatedAllocations: false
+INFO         | Graphics Adapter Vendor Google (Intel)
+INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Intel(R) UHD Graphics)
+INFO         | Graphics API Version OpenGL ES 3.0 (4.5.0 - Build 32.0.101.7076)
+INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+INFO         | Graphics Device Extensions N/A
+INFO         | Disabling sparse binding feature support
+INFO         | Sending adb public key [QAAAACvVgCZ9vqaRcxhc8S+BHO6IgCERVSU5oCCV+Lru8KBIsmgAUb3nnlB0Rj6GK7ydqRuJg8NgX5X+ceD/Hm85m5e0YzL7D/SDmdL76iVWeQxIr9ucC+TtCVV3bDm5wz6qUH8h5LRW1+rrP1Zihw82t65Nz097P6obcwaJ/OVy15iY/ysdtz+yO7WlBsuPa5bybeZjvHdEGZ+w/IKjzHuxrXlwg2wlsZPm6mrRJ6CbFecrtRUJPu17odNmpB80XhmyfASH5SGNLS4S7FyUZb8qK8ljB/DhY8TwBXAJtwCb/8ELtXc9RA/5sblf69dEoeRZprv1w2Ju2g8eBoC9mLSJtuOgk7qS9Qo5nS1lbql+cpKFk//goMhJJFnBTvbE8LtEuoASlsPdLPj9RaucJ+6J+/3IsQeS22w6BZkmaM6eKkoOJrCVJ9S2B5w1vzuOvG3zkKLg82r1g5/nUMgFKJ6yjnvG1lbXr+pE8l5RMAW3uOGSrbMJTWSZGdJQBII+zzitZkmDp5VHlhy5hIW/KF6sz8P/2Wh2XDN/oJ0oB8jVCfI4WK+OInJIls/eTKfQCLGfV5fVMDhINX+9QCUktpnt/fE07u+aQTFC8tu9UpAXG9MbiYA7OyV2hEIK/U+dUNG4NKFgWEySLFPiFcSfGx8meB7QnqQ2QplSohIpplYiAJsF6j3mXwEAAQA= @unknown]
+INFO         | Userspace boot properties:
+INFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0
+INFO         |   androidboot.dalvik.vm.heapsize=512m
+INFO         |   androidboot.debug.hwui.renderer=skiagl
+INFO         |   androidboot.hardware=ranchu
+INFO         |   androidboot.hardware.gltransport=pipe
+INFO         |   androidboot.hardware.vulkan=ranchu
+INFO         |   androidboot.logcat=*:V
+INFO         |   androidboot.opengles.version=196608
+INFO         |   androidboot.qemu=1
+INFO         |   androidboot.qemu.adb.pubkey=QAAAACvVgCZ9vqaRcxhc8S+BHO6IgCERVSU5oCCV+Lru8KBIsmgAUb3nnlB0Rj6GK7ydqRuJg8NgX5X+ceD/Hm85m5e0YzL7D/SDmdL76iVWeQxIr9ucC+TtCVV3bDm5wz6qUH8h5LRW1+rrP1Zihw82t65Nz097P6obcwaJ/OVy15iY/ysdtz+yO7WlBsuPa5bybeZjvHdEGZ+w/IKjzHuxrXlwg2wlsZPm6mrRJ6CbFecrtRUJPu17odNmpB80XhmyfASH5SGNLS4S7FyUZb8qK8ljB/DhY8TwBXAJtwCb/8ELtXc9RA/5sblf69dEoeRZprv1w2Ju2g8eBoC9mLSJtuOgk7qS9Qo5nS1lbql+cpKFk//goMhJJFnBTvbE8LtEuoASlsPdLPj9RaucJ+6J+/3IsQeS22w6BZkmaM6eKkoOJrCVJ9S2B5w1vzuOvG3zkKLg82r1g5/nUMgFKJ6yjnvG1lbXr+pE8l5RMAW3uOGSrbMJTWSZGdJQBII+zzitZkmDp5VHlhy5hIW/KF6sz8P/2Wh2XDN/oJ0oB8jVCfI4WK+OInJIls/eTKfQCLGfV5fVMDhINX+9QCUktpnt/fE07u+aQTFC8tu9UpAXG9MbiYA7OyV2hEIK/U+dUNG4NKFgWEySLFPiFcSfGx8meB7QnqQ2QplSohIpplYiAJsF6j3mXwEAAQA= @unknown
+INFO         |   androidboot.qemu.avd_name=Medium
+INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+INFO         |   androidboot.qemu.camera_protocol_ver=1
+INFO         |   androidboot.qemu.cpuvulkan.version=4202496
+INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+INFO         |   androidboot.qemu.gltransport.name=pipe
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=1080x2400
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR36X4X9X0
+INFO         |   androidboot.vbmeta.digest=8c6ff42bff8696120e63308883e0cfad21d048439d53af334ec09bf5eb680f47
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6720
+INFO         |   androidboot.veritymode=enforcing
+WHPX on Windows 10.0.26200 detected.
+Windows Hypervisor Platform accelerator is operational
+netsimd I 08-09 00:05:39.620 daemon\src\rust_main.rs:100 - netsim artifacts path: "C:\\Users\\hp\\AppData\\Local\\Temp\\netsimd"
+netsimd I 08-09 00:05:39.620 daemon\src\rust_main.rs:103 - NetsimdArgs {
+    fd_startup_str: None,
+    no_cli_ui: true,
+    no_web_ui: true,
+    pcap: false,
+    disable_address_reuse: false,
+    hci_port: None,
+    connector_instance: None,
+    instance: None,
+    logtostderr: false,
+    dev: false,
+    forward_host_mdns: false,
+    vsock: None,
+    config: None,
+    host_dns: Some(
+        "192.168.100.1",
+    ),
+    http_proxy: None,
+    wifi_tap: None,
+    wifi: None,
+    test_beacons: false,
+    no_test_beacons: false,
+    no_shutdown: false,
+    verbose: false,
+    version: false,
+    debug: DebugArgs {
+        debug_no_traffic: false,
+        debug_no_network: false,
+        debug_no_wmedium: false,
+        debug_no_mdns_wmedium: false,
+        debug_no_guest_to_host_mdns: false,
+    },
+    rssi: None,
+}
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: C:\Users\hp\AppData\Local\Android\Sdk\emulator\lib\emulator_access.json
+WARNING      | *** Basic token auth should only be used by android-studio ***
+INFO         | The active JSON Web Key Sets can be found here: C:\Users\hp\AppData\Local\Temp\avd\running\10856\jwks\b37d7242-9deb-4238-97e2-3c9eb7c199a9\active.jwk
+INFO         | Scanning C:\Users\hp\AppData\Local\Temp\avd\running\10856\jwks\b37d7242-9deb-4238-97e2-3c9eb7c199a9 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: C:\Users\hp\AppData\Local\Temp\avd\running\pid_10856.ini
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig 0
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasCompatibleHypervisor
+INFO         |      Ok: Hypervisor compatibility to run avd: `Medium` are met
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Medium` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU requirements to run avd: `Medium` are passed
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Medium` are met
+INFO         | GPU Vendor=[Google (Intel)]
+INFO         | GPU Renderer=[Android Emulator OpenGL ES Translator (Intel(R) UHD Graphics)]
+INFO         | GPU Version=[OpenGL ES 3.0 (4.5.0 - Build 32.0.101.7076)]
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_rgbcSensorValueWidget_valueChanged() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_posture_valueChanged(int) (:0, )
+INFO         | Warning: QObject::connect: Cannot queue arguments of type 'std::vector<android::emulation::control::SnapshotInfo>'
+(Make sure 'std::vector<android::emulation::control::SnapshotInfo>' is registered using qRegisterMetaType().) (:0, )
+INFO         | AVD supportsNativeGLES=1, supportsGuestAngle=1
+INFO         | Guest Angle is still unstable for API > 35.
+INFO         | Created extended window in 1.236852s
+INFO         | Activated packet streamer for uwb emulation
+INFO         | Activated packet streamer for bluetooth emulation
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+WARNING      | adb command 'C:\Users\hp\AppData\Local\Android\Sdk\platform-tools\adb.exe -s emulator-5554 shell getprop sys.boot_completed ' failed: 'adb.exe: device offline'
+INFO         | Boot completed in 134498 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: f043:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 204c:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 4052:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 1860:1f53:2302:0:f043:1f53:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 9075:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: c07d:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: e083:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | Ignore IPv6 address: 6891:5449:2302:0:9075:5449:2302:0
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | IPv4 server found: 192.168.100.1
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: 907e:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: c086:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
