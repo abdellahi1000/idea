@@ -283,3 +283,7 @@ INFO         | Ignore IPv6 address: e08c:6852:2302:0:907e:6852:2302:0
 INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
 INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
 INFO         | Ignore IPv6 address: b89a:6852:2302:0:907e:6852:2302:0
+INFO         | Wait for emulator (pid 10856) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+WARNING      | Not saving state: RAM not mapped as shared
+INFO         | Saving snapshot 'default_boot' using 6 ms
